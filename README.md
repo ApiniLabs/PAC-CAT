@@ -22,9 +22,11 @@ While the basic specification for the `PAC-ID` has been intentionally kept minim
   - what the uniqueness scope is
 - Reliable and easy for service discovery with [PAC-ID Resolver](https://github.com/ApiniLabs/pac-id-resolver)
 
+>⚠️: PAC-CAT is not a data record - It is not the intention to fully describe an entity with these categorization. 
+
 
 ## Specification
-> **Note**: While it is RECOMMENDED to use PAC-CAT to structure `PAC-ID`s, doing so is optional. A `PAC-ID` can be valid, without following this specification. 
+> **<span style="color:blue"> ℹ️️ </span>**: While it is RECOMMENDED to use PAC-CAT to structure `PAC-ID`s, doing so is optional. A `PAC-ID` can be valid, without following this specification. 
 
 
 ### Structure of the `identifier`
@@ -69,14 +71,18 @@ If needed, `custom segment`s CAN be added. If so, they MUST be placed after the 
 
 
 #### Main Category *Materials*
+Materials are physical entities, that can be uniquely identified.
+
 |Subcategory | [`category key`](#category-key) | [`category segments`](#category-segments) |
 |:--- | :------------: | :--- |
 | **Device** (Or equipment, apparatus, appliance, instrument and the like)<br>*A Device is a uniquely identifiable item, non-aliquotable and not dividable.* | **`-MD`**| **`240` (Model code)**<br>**`21` (Serial number)**|
 | **Substance** (Or source material, aliquot, sample, product and the like)<br>*A Substance is a uniquely identifiable item, aliquotable and/or dividable.*|**`-MS`**| **`240` (Product number)** <br>`10` (Batch number)<br>`20` (Container size)<br>`21` (Container number)<br>`250` (Aliquot) |
 | **Consumable**<br>*Consumables are typically bulk goods with limited lifespan. A Consumable is an item with a uniquely identifiable type and typically countable.*|**`-MC`** | **`240` (Product code)**<br>`10` (Batch number)<br>`20` (Packaging size)<br>`21` (Serial number)<br>`250` (Aliquot)    |
-| **Misc**<br>*Anything that doesn’t fit other material types – **ideally never used**.*|**`-MM`**| **`240` (Product code)**<br>`10` (Batch number)<br>`20` (Packaging size)<br>`21` (Serial number)<br>`250` (Aliquot)    |
+| **Misc**<br>*Anything that doesn’t fit other material types – **ideally never used**.*|**`-MX`**| **`240` (Product code)**<br>`10` (Batch number)<br>`20` (Packaging size)<br>`21` (Serial number)<br>`250` (Aliquot)    |
 
 #### Main Category *Data*
+Data refers to recorded information  — either digital or analog.
+
 | | [`category key`](#category-key) | [`category segments`](#category-segments) |
 |:--- | :------------: | :--- |
 | **Result** (Or completed run data, report, certificate of analysis (CoA) or the like)<br>*A Result is data that is a direct result of a completed run of a method.*|**`-DR`**| **`21` (ID)**|
@@ -84,24 +90,16 @@ If needed, `custom segment`s CAN be added. If so, they MUST be placed after the 
 | **Calibration** (Or a basic configuration.)<br>*A Calibration is changeable data that is used as a basis for running a method that creates progress data and/or result data.* |**`-DC`**| **`21` (ID)**|
 | **Progress** (Or status update, live data or the like)<br>*Progress data is of time-limited validity occurring while a method is executed.*|**`-DP`**| **`21` (ID)**|
 | **Static** (Or metadata, datasheet, master data, physical properties or the like.)<br>*Static data is unchangeable and universally true.*|**`-DS`**| **`21` (ID)**|
+| **Misc** <br>*Anything that doesn’t fit other data types*|**`-DX`**| **`21` (ID)**|
 
 #### Main Category *Processors*
+Processors are specific systems under the control of the issuer that assign and manage materials or data.
+**Note**: Instruments often incorporate such functionality. It is RECOMMENDED to prioritize the material aspect of such instuments and use category `-MD`.
+
 | | [`category key`](#category-key) | [`category segments`](#category-segments) |
 |:--- | :------------: | :--- |
-| **Processor Generic** | **`-P`** | **`240` (Processor code)** <br>`21` (Processor instance) |
-
-Examples: 
-|| |
-|-|-| 
-| Issuing system is an SAP test instance | ```.../-P/240:SAP/21:TST```|
-| Issuing system is the only SAP  | ```.../-P/240:SAP```|
-| Issuing system is ACME tenant of an SaaS system called AURORA  | ```.../-P/240:AURORA/21:ACME```|
-| Pencil managed in Asset management in SAP. 1234 is the asset number issued by Excel List on sharepoint| ```.../-MC/240:EDELWEISS-3B/21:1234/-P/240:SHAREPOINT/21:ASSETS.XLS```|
-| Beehive managed in Asset management in SAP. 1234 is the asset number issued by SAP | ```.../-MD/240:BEEHIVE/21:1234/-P/240:SAP```|
-| Result of BAL-500 balance with serial number X78767| ```.../-DR/21:1234/-MD/240:BAL-500/21:X7867```
-| Result of BAL-500 balance with serial number X78767, managed by Mettorius LapCross SW| ```.../-DR/21:1234/-P/240:LAPCROSS```
-
-
+| **Software** | **`-PS`** | **`240` (Processor code)** <br>`21` (Processor instance) |
+| **Misc** | **`-PX`** | **`240` (Processor code)** <br>`21` (Processor instance) |
 
 
 ### Short Notation
@@ -114,6 +112,20 @@ HTTPS://PAC.METTORIUS.COM/-MD/BAL500/210263/8008:20230205
 The short notation omits the keys for segments of each category. Keys are implicitly assigned based on the [recommended segment order above](#recommened-segments-per-category) until an explicit key that differs is reached or an `id segment` starting with `-` is reached. Explicit keys can be used along implicit ones, as long as the order of segments is matched.
 
 e.g. for ``HTTPS://PAC.METTORIUS.COM/-MD/240:BAL500/210263/8008:20230205``, `210263` is still regarded to have the implicit key `21`. For ``HTTPS://PAC.METTORIUS.COM/-MD/240:BAL500/8008:20230205/210263`` we can’t auto-assign a key for `210263` as it is preceded by a `id segment` with an explicit key. `210263` is therefore interpreted as a normal `id segment` without `id segment key`.
+
+
+### Examples: 
+| **Entity Description** | **PAC-ID** | **Note** |
+|------------------------|------------|----------|
+| Production record managed in SAP test instance at Mettorius | `HTTPS://PAC.METTORIUS.COM/-DR/21:12345/-PS/240:SAP/21:TST` | `12345` is the ID assigned by SAP; `TST` refers to the test instance. |
+| Production record managed in the only SAP system at Mettorius | `HTTPS://PAC.METTORIUS.COM/-DR/21:12345/-PS/240:SAP` | `12345` assigned by SAP; single instance assumed, so `TST` omitted. |
+| Instrument by Mettorius | `HTTPS://PAC.METTORIUS.COM/-MD/240:BAL500/21:12345/` | Mettorius produces instruments; adding an issuing system would not help with routing. |
+| Calibration managed in the "ACME" tenant of "EosTec"`s SaaS system "AURORA" | `HTTPS://PAC.EOSTEC.COM/-DC/21:12345/-PS/240:AURORA/21:ACME` | `12345` assigned by AURORA; `ACME` is the tenant name. |
+| Pencil used at "ACME". For stationery, they use an Excel-based asset list on SharePoint | `HTTPS://PAC.ACME.COM/-MC/240:EDELWEISS-3B/21:1234/-P/240:SHAREPOINT/21:ASSETS.XLS` | `1234` is the ID given in `ASSETS.XLS` |
+| Beehive of the ACME company. Tracked in SAP Asset Management | `HTTPS://PAC.ACME.COM/-MD/240:BEEHIVE/21:1234/-P/240:SAP` | `1234` is the asset number assigned by SAP. |
+| Result generated by BAL-500 balance with serial X78767 | `HTTPS://PAC.METTORIUS.COM/-DR/21:1234/-MD/240:BAL-500/21:X78767` | `1234` is the result ID; the issuing system is the balance itself. |
+| Result managed by Mettorius LabCross software | `HTTPS://PAC.METTORIUS.COM/-DR/21:1234/-P/240:LABCROSS` | `1234` is the result ID assigned by LabCross. |
+
 
 
 
