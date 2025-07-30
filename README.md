@@ -98,8 +98,8 @@ Processors are specific systems under the control of the issuer that assign and 
 
 | | [`category key`](#category-key) | [`category segments`](#category-segments) |
 |:--- | :------------: | :--- |
-| **Software**<br>*Software are systems which generate, transform or store data.* <br><br>**Note**: Instruments often incorporate such functionality. In these cases it is RECOMMENDED to prioritize the material aspect of such instruments and use category `-MD`. | **`-PS`** | **`240` (Processor&nbsp;code)**&nbsp;✱ <br>`21` (Processor&nbsp;instance) |
-| **Misc** <br>*Anything that doesn’t fit other processor types*– **ideally never used**| **`-PX`** | **`240` (Processor&nbsp;code)**&nbsp;✱ <br>`21` (Processor&nbsp;instance) |
+| **Software**<br>*Software are systems which generate, transform or store data.* <br><br>**Note**: Instruments often incorporate such functionality. In these cases it is RECOMMENDED to prioritize the material aspect of such instruments and use category `-MD`. | **`-PS`** | **`21`(Processor&nbsp;instance)**&nbsp;✱ <br> `240` (Processor&nbsp;code)|
+| **Misc** <br>*Anything that doesn’t fit other processor types*– **ideally never used**| **`-PX`** | **`21`(Processor&nbsp;instance)**&nbsp;✱ <br> `240` (Processor&nbsp;code) |
 
 
 ### Short Notation
