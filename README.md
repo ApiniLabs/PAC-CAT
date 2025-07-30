@@ -90,16 +90,16 @@ Data refers to recorded information  — either digital or analog.
 | **Calibration** (Or a basic configuration.)<br>*A Calibration is changeable data that is used as a basis for running a method that creates progress data and/or result data.* |**`-DC`**| **`21` (ID)**|
 | **Progress** (Or status update, live data or the like)<br>*Progress data is of time-limited validity occurring while a method is executed.*|**`-DP`**| **`21` (ID)**|
 | **Static** (Or metadata, datasheet, master data, physical properties or the like.)<br>*Static data is unchangeable and universally true.*|**`-DS`**| **`21` (ID)**|
-| **Misc** <br>*Anything that doesn’t fit other data types*|**`-DX`**| **`21` (ID)**|
+| **Misc** <br>*Anything that doesn’t fit other data types*– **ideally never used**|**`-DX`**| **`21` (ID)**|
 
 #### Main Category *Processors*
 Processors are specific systems under the control of the issuer that assign and manage materials or data.
-**Note**: Instruments often incorporate such functionality. It is RECOMMENDED to prioritize the material aspect of such instuments and use category `-MD`.
+
 
 | | [`category key`](#category-key) | [`category segments`](#category-segments) |
 |:--- | :------------: | :--- |
-| **Software** | **`-PS`** | **`240` (Processor code)** <br>`21` (Processor instance) |
-| **Misc** | **`-PX`** | **`240` (Processor code)** <br>`21` (Processor instance) |
+| **Software**<br>*Software are systems which generate, transform or store data.* <br><br>**Note**: Instruments often incorporate such functionality. In these cases it is RECOMMENDED to prioritize the material aspect of such instruments and use category `-MD`. | **`-PS`** | **`240` (Processor code)** <br>`21` (Processor instance) |
+| **Misc** <br>*Anything that doesn’t fit other processor types*– **ideally never used**| **`-PX`** | **`240` (Processor code)** <br>`21` (Processor instance) |
 
 
 ### Short Notation
