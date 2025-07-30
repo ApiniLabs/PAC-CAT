@@ -63,7 +63,7 @@ The second category, if added, SHALL identify the issuing system.
 The following predefined categories MUST be used if applicable. 
 Custom categories CAN be used if no suitable predefined category is available. _Use this as a last resort._
 
-`category segments`s in **bold** MUST be used.
+Mandatory `category segments`s are marked with ✱ and in **boldface**. They MUST be used.
 The other `category segments` SHOULD be added if they are available. 
 The order SHOULD be preserved, even if optional `category segments` are omitted.
 
@@ -75,22 +75,22 @@ Materials are physical entities, that can be uniquely identified.
 
 |Subcategory | [`category key`](#category-key) | [`category segments`](#category-segments) |
 |:--- | :------------: | :--- |
-| **Device** (Or equipment, apparatus, appliance, instrument and the like)<br>*A Device is a uniquely identifiable item, non-aliquotable and not dividable.* | **`-MD`**| **`240` (Model code)**<br>**`21` (Serial number)**|
-| **Substance** (Or source material, aliquot, sample, product and the like)<br>*A Substance is a uniquely identifiable item, aliquotable and/or dividable.*|**`-MS`**| **`240` (Product number)** <br>`10` (Batch number)<br>`20` (Container size)<br>`21` (Container number)<br>`250` (Aliquot) |
-| **Consumable**<br>*Consumables are typically bulk goods with limited lifespan. A Consumable is an item with a uniquely identifiable type and typically countable.*|**`-MC`** | **`240` (Product code)**<br>`10` (Batch number)<br>`20` (Packaging size)<br>`21` (Serial number)<br>`250` (Aliquot)    |
-| **Misc**<br>*Anything that doesn’t fit other material types – **ideally never used**.*|**`-MX`**| **`240` (Product code)**<br>`10` (Batch number)<br>`20` (Packaging size)<br>`21` (Serial number)<br>`250` (Aliquot)    |
+| **Device** (Or equipment, apparatus, appliance, instrument and the like)<br>*A Device is a uniquely identifiable item, non-aliquotable and not dividable.* | **`-MD`**| **`240` (Model&nbsp;code)** ✱ <br> **`21` (Serial&nbsp;number)** ✱|
+| **Substance** (Or source material, aliquot, sample, product and the like)<br>*A Substance is a uniquely identifiable item, aliquotable and/or dividable.*|**`-MS`**| **`240` (Product&nbsp;number)**&nbsp;✱ <br>`10` (Batch number)<br>`20` (Container size)<br>`21` (Container&nbsp;number)<br>`250` (Aliquot) |
+| **Consumable**<br>*Consumables are typically bulk goods with limited lifespan. A Consumable is an item with a uniquely identifiable type and typically countable.*|**`-MC`** | **`240` (Product&nbsp;code)**&nbsp;✱<br>`10` (Batch&nbsp;number)<br>`20` (Packaging size)<br>`21` (Serial&nbsp;number)<br>`250` (Aliquot)    |
+| **Misc**<br>*Anything that doesn’t fit other material types – **ideally never used**.*|**`-MX`**| **`240` (Product&nbsp;code)**&nbsp;✱<br>`10` (Batch&nbsp;number)<br>`20` (Packaging size)<br>`21` (Serial number)<br>`250` (Aliquot)    |
 
 #### Main Category *Data*
 Data refers to recorded information  — either digital or analog.
 
 | | [`category key`](#category-key) | [`category segments`](#category-segments) |
 |:--- | :------------: | :--- |
-| **Result** (Or completed run data, report, certificate of analysis (CoA) or the like)<br>*A Result is data that is a direct result of a completed run of a method.*|**`-DR`**| **`21` (ID)**|
-| **Method** (Or run configuration, recipe, SOP and the like)<br>*A Method is a definition of a certain process or workflow.*|**`-DM`**| **`21` (ID)**|
-| **Calibration** (Or a basic configuration.)<br>*A Calibration is changeable data that is used as a basis for running a method that creates progress data and/or result data.* |**`-DC`**| **`21` (ID)**|
-| **Progress** (Or status update, live data or the like)<br>*Progress data is of time-limited validity occurring while a method is executed.*|**`-DP`**| **`21` (ID)**|
-| **Static** (Or metadata, datasheet, master data, physical properties or the like.)<br>*Static data is unchangeable and universally true.*|**`-DS`**| **`21` (ID)**|
-| **Misc** <br>*Anything that doesn’t fit other data types*– **ideally never used**|**`-DX`**| **`21` (ID)**|
+| **Result** (Or completed run data, report, certificate of analysis (CoA) or the like)<br>*A Result is data that is a direct result of a completed run of a method.*|**`-DR`**| **`21` (ID)**&nbsp;✱|
+| **Method** (Or run configuration, recipe, SOP and the like)<br>*A Method is a definition of a certain process or workflow.*|**`-DM`**| **`21` (ID)**&nbsp;✱|
+| **Calibration** (Or a basic configuration.)<br>*A Calibration is changeable data that is used as a basis for running a method that creates progress data and/or result data.* |**`-DC`**| **`21` (ID)**&nbsp;✱|
+| **Progress** (Or status update, live data or the like)<br>*Progress data is of time-limited validity occurring while a method is executed.*|**`-DP`**| **`21` (ID)**&nbsp;✱|
+| **Static** (Or metadata, datasheet, master data, physical properties or the like.)<br>*Static data is unchangeable and universally true.*|**`-DS`**| **`21` (ID)**&nbsp;✱|
+| **Misc** <br>*Anything that doesn’t fit other data types*– **ideally never used**|**`-DX`**| **`21` (ID)**&nbsp;✱|
 
 #### Main Category *Processors*
 Processors are specific systems under the control of the issuer that assign and manage materials or data.
@@ -98,8 +98,8 @@ Processors are specific systems under the control of the issuer that assign and 
 
 | | [`category key`](#category-key) | [`category segments`](#category-segments) |
 |:--- | :------------: | :--- |
-| **Software**<br>*Software are systems which generate, transform or store data.* <br><br>**Note**: Instruments often incorporate such functionality. In these cases it is RECOMMENDED to prioritize the material aspect of such instruments and use category `-MD`. | **`-PS`** | **`240` (Processor code)** <br>`21` (Processor instance) |
-| **Misc** <br>*Anything that doesn’t fit other processor types*– **ideally never used**| **`-PX`** | **`240` (Processor code)** <br>`21` (Processor instance) |
+| **Software**<br>*Software are systems which generate, transform or store data.* <br><br>**Note**: Instruments often incorporate such functionality. In these cases it is RECOMMENDED to prioritize the material aspect of such instruments and use category `-MD`. | **`-PS`** | **`240` (Processor&nbsp;code)**&nbsp;✱ <br>`21` (Processor&nbsp;instance) |
+| **Misc** <br>*Anything that doesn’t fit other processor types*– **ideally never used**| **`-PX`** | **`240` (Processor&nbsp;code)**&nbsp;✱ <br>`21` (Processor&nbsp;instance) |
 
 
 ### Short Notation
