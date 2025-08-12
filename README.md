@@ -22,12 +22,13 @@ While the basic specification for the `PAC-ID` has been intentionally kept minim
   - what the uniqueness scope is
 - Reliable and easy for service discovery with [PAC-ID Resolver](https://github.com/ApiniLabs/pac-id-resolver)
 
-> [!WARNING]
+> [!IMPORTANT]
 > PAC-CAT is not a data record - It is not the intention to fully describe an entity with these categorization. 
 
 
 ## Specification
-> **<span style="color:blue"> ℹ️️ </span>**: While it is RECOMMENDED to use PAC-CAT to structure `PAC-ID`s, doing so is optional. A `PAC-ID` can be valid, without following this specification. 
+> [!NOTE]
+> While it is RECOMMENDED to use PAC-CAT to structure `PAC-ID`s, doing so is optional. A `PAC-ID` can be valid, without following this specification. 
 
 
 ### Structure of the `identifier`
