@@ -79,7 +79,7 @@ If needed, `custom segment`s CAN be added. If so, they MUST be placed after the 
 #### Main Category *Materials*
 Materials are physical entities, that can be uniquely identified.
 
-|Subcategory | `category key` | `category segments`|
+|Description | `category key` | `category segments`|
 |:--- | :------------: | :--- |
 | **Device** (Or equipment, apparatus, appliance, instrument and the like)<br>*A Device is a uniquely identifiable item, non-aliquotable and not dividable.* | **`-MD`**| **`240` (Model&nbsp;code)** * <br> **`21` (Serial&nbsp;number)** *|
 | **Substance** (Or source material, aliquot, sample, product and the like)<br>*A Substance is a uniquely identifiable item, aliquotable and/or dividable.*|**`-MS`**| **`240` (Product&nbsp;number)**&nbsp;* <br>`10` (Batch number)<br>`20` (Container size)<br>`21` (Container&nbsp;number)<br>`250` (Aliquot) |
@@ -89,7 +89,7 @@ Materials are physical entities, that can be uniquely identified.
 #### Main Category *Data*
 Data refers to recorded information  — either digital or analog.
 
-|Subcategory | `category key` | `category segments`|
+|Description | `category key` | `category segments`|
 |:--- | :------------: | :--- |
 | **Result** (Or completed run data, report, certificate of analysis (CoA) or the like)<br>*A Result is data that is a direct result of a completed run of a method.*|**`-DR`**| **`21` (ID)**&nbsp;*|
 | **Method** (Or run configuration, recipe, SOP and the like)<br>*A Method is a definition of a certain process or workflow.*|**`-DM`**| **`21` (ID)**&nbsp;*|
@@ -101,10 +101,16 @@ Data refers to recorded information  — either digital or analog.
 #### Main Category *Processors*
 Processors are specific systems under the control of the issuer that assign and manage materials or data.
 
-|Subcategory | `category key` | `category segments`|
+|Description | `category key` | `category segments`|
 |:--- | :------------: | :--- |
 | **Software**<br>*Software are systems which generate, transform or store data.* <br><br>**Note**: Instruments often incorporate such functionality. In these cases it is RECOMMENDED to prioritize the material aspect of such instruments and use category `-MD`. | **`-PS`** | **`21`(Processor&nbsp;instance)**&nbsp;* <br> `240` (Processor&nbsp;code)|
 | **Misc** <br>*Anything that doesn’t fit other processor types*– **ideally never used**| **`-PX`** | **`21`(Processor&nbsp;instance)**&nbsp;* <br> `240` (Processor&nbsp;code) |
+
+#### Main Category *Misc*
+This category is for anything that doesn't fit into other main categories.
+|Description | `category key` | `category segments`|
+|:--- | :------------: | :--- |
+| **Misc**<br />*Generic fallback category* – **ideally never used**|**`-X`**| **`21` (ID)**&nbsp;*|
 
 
 ### Short Notation
