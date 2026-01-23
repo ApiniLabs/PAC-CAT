@@ -51,7 +51,7 @@ HTTPS://PAC.METTORIUS.COM/-MD/240:BAL500/21:210263/8008:20230205/8009:ABC
 
 #### Concatenate a second category to identify the issuing system
 
-Imagine a `PAC-ID` that points to a result set of a device. We’d usually want to know on which device that result was created. We CAN simply concatenate a second category (in this case a material category to a data category):
+Imagine a `PAC-ID` that points to a result set of a device. We’d usually want to know on which device that result was created. We MAY simply concatenate a second category (in this case a material category to a data category):
 
 Example:
 
@@ -62,18 +62,18 @@ HTTPS://PAC.METTORIUS.COM/-DR/240:123ABC/8008:20230205/-MD/240:BAL500/21:210263
 
 The advantage of this is that it allows resolving device related attributes and services (e.g. device operation manual, …) via the same coupling table information entries also used for `PAC-ID`s relating to a device.
 
-The category of the item the `PAC-ID` is referring to, SHALL be the first `category`.
-The second category, if added, SHALL identify the issuing system.
+The category of the item the `PAC-ID` is referring to, MUST be the first `category`.
+The second category, if added, MUST identify the issuing system.
 
 ### Predefined Categories
-The following predefined categories MUST be used if applicable. 
-Custom categories CAN be used if no suitable predefined category is available. _Use this as a last resort._
+The following predefined categories MUST be used if applicable.
+Custom categories MAY be used if no suitable predefined category is available. _Use this as a last resort._
 
 Mandatory `category segments`s are marked with * and in **boldface**. They MUST be used.
-The other `category segments` SHOULD be added if they are available. 
+The other `category segments` SHOULD be added if they are available.
 The order SHOULD be preserved, even if optional `category segments` are omitted.
 
-If needed, `custom segment`s CAN be added. If so, they MUST be placed after the recommended `category segments`.
+If needed, `custom segment`s MAY be added. If so, they MUST be placed after the recommended `category segments`.
 
 
 #### Main Category *Materials*
@@ -114,18 +114,18 @@ This category is for anything that doesn't fit into other main categories.
 
 
 ### Short Notation
-In oder to reduce the number of characters a short form MAY be used by omitting the `id segment key`s, like this:. 
+In oder to reduce the number of characters a short form MAY be used by omitting the `id segment key`s, like this:.
 
 ```
 HTTPS://PAC.METTORIUS.COM/-MD/BAL500/210263/8008:20230205
 ```
 
-The short notation omits the keys for segments of each category. Keys are implicitly assigned based on the recommended segment order above, until an explicit key that differs is reached or an `id segment` starting with `-` is reached. Explicit keys can be used along implicit ones, as long as the order of segments is matched.
+The short notation omits the keys for segments of each category. Keys are implicitly assigned based on the recommended segment order above, until an explicit key that differs is reached or an `id segment` starting with `-` is reached. Explicit keys MAY be used along implicit ones, as long as the order of segments is matched.
 
 e.g. for ``HTTPS://PAC.METTORIUS.COM/-MD/240:BAL500/210263/8008:20230205``, `210263` is still regarded to have the implicit key `21`. For ``HTTPS://PAC.METTORIUS.COM/-MD/240:BAL500/8008:20230205/210263`` we can’t auto-assign a key for `210263` as it is preceded by a `id segment` with an explicit key. `210263` is therefore interpreted as a normal `id segment` without `id segment key`.
 
 
-### Examples: 
+### Examples:
 | **Entity Description** | **PAC-ID** | **Note** |
 |------------------------|------------|----------|
 | Production record managed in Fluidics360 ERP test instance at Mettorius | `HTTPS://PAC.METTORIUS.COM/-DR/21:12345/-PS/240:FLUIDICS360/21:TST` | `12345` is the ID assigned by the ERP; `TST` refers to the test instance. |
@@ -159,7 +159,7 @@ This work is licensed under a
 
 [cc-by-sa]: http://creativecommons.org/licenses/by-sa/4.0/
 [cc-by-sa-image]: https://licensebuttons.net/l/by-sa/4.0/88x31.png
-[cc-by-sa-shield]: https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg# 
+[cc-by-sa-shield]: https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg#
 
 
 
