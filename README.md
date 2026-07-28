@@ -149,7 +149,7 @@ HTTPS://PAC.OMNIZYME.COM/-MS/240:AMYLASE/10:AB9876/20:500ML/21:9876/+ACMELABS.CO
 |------------------------|------------|----------|
 | Production record managed in Fluidics360 ERP test instance at Mettorius | `HTTPS://PAC.METTORIUS.COM/-DR/21:12345/-PS/240:FLUIDICS360/21:TST` | `12345` is the ID assigned by the ERP; `TST` refers to the test instance. |
 | Production record managed in the only Fluidics360 system at Mettorius | `HTTPS://PAC.METTORIUS.COM/-DR/21:12345/-PS/240:FLUIDICS360` | `12345` assigned by Fluidics360; single instance assumed, so `TST` omitted. |
-| Instrument by Mettorius | `HTTPS://PAC.METTORIUS.COM/-MD/240:BAL500/21:12345/` | Mettorius produces instruments; adding an issuing system would not help with routing. |
+| Instrument by Mettorius | `HTTPS://PAC.METTORIUS.COM/-MD/240:BAL500/21:12345` | Mettorius produces instruments; adding an issuing system would not help with routing. |
 | Calibration managed in the "ACME" tenant of "EosTec"`s SaaS system "Aurora" | `HTTPS://PAC.EOSTEC.COM/-DC/21:12345/-PS/240:AURORA/21:ACME` | `12345` assigned by Aurora; `ACME` is the tenant name. |
 | Pencil used at "ACME". For stationery, they use an Excel-based asset list on ShareDot | `HTTPS://PAC.ACME.COM/-MC/240:EDELWEISS-3B/21:1234/-P/240:SHAREDOT/21:ASSETS.XLS` | `1234` is the ID given in `ASSETS.XLS` |
 | Beehive of the ACME company. Tracked in Fluidics360 Asset Management | `HTTPS://PAC.ACME.COM/-MD/240:BEEHIVE/21:1234/-P/240:FLUIDICS360` | `1234` is the asset number assigned by SAP. |
