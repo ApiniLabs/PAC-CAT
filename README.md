@@ -65,6 +65,9 @@ The advantage of this is that it allows resolving device related attributes and 
 The category of the item the `PAC-ID` is referring to, MUST be the first `category`.
 The second category, if added, MUST identify the issuing system.
 
+> [!NOTE]
+> The same mechanism MAY also be used after a derivation namespace segment (`+<namespace>`), to identify the issuing system used for that specific derivation. See [Identifying the issuing system of a derivation](#identifying-the-issuing-system-of-a-derivation).
+
 ### Predefined Categories
 The following predefined categories MUST be used if applicable.
 Custom categories MAY be used if no suitable predefined category is available. _Use this as a last resort._
@@ -127,12 +130,12 @@ e.g. for ``HTTPS://PAC.METTORIUS.COM/-MD/240:BAL500/210263/8008:20230205``, `210
 
 ### Segments added via a derivation namespace (`+`)
 
-A `PAC-ID` MAY be extended by a third party using a **derivation namespace segment** (`+<namespace>`), as defined in the [PAC-ID specification](https://github.com/ApiniLabs/PAC-ID). Where `PAC-CAT` is used, any `category segment`s that follow a `+<namespace>` marker MUST be treated as further `category segment`s of the **primary category** — they MUST NOT start a new category, and MUST NOT be attributed to the issuing system.
+A `PAC-ID` MAY be extended by a third party using a **derivation namespace segment** (`+<namespace>`), as defined in the [PAC-ID specification](https://github.com/ApiniLabs/PAC-ID). Where `PAC-CAT` is used, any `category segment`s that follow a `+<namespace>` marker MUST be treated as further `category segment`s of the **primary category** — they MUST NOT start a new category.
 
 Example:
 ```
 HTTPS://PAC.OMNIZYME.COM/-MS/240:AMYLASE/10:AB9876/20:500ML/21:9876/+ACMELABS.COM/250:1
-                         | primary category                | added by ACMELABS.COM
+                         | primary category                        | added by ACMELABS.COM
 ```
 
 Here, `250:1` (Aliquot) is a `category segment` of the `-MS` primary category, even though it was added by `ACMELABS.COM` rather than the original issuer, `OMNIZYME.COM`.
@@ -142,6 +145,21 @@ A `+<namespace>` marker does not interrupt the implicit key sequence described i
 ```
 HTTPS://PAC.OMNIZYME.COM/-MS/240:AMYLASE/10:AB9876/20:500ML/21:9876/+ACMELABS.COM/1
 ```
+
+#### Identifying the issuing system of a derivation
+
+As with the primary category (see [Concatenate a second category to identify the issuing system](#concatenate-a-second-category-to-identify-the-issuing-system)), a second category MAY be concatenated after the `category segment`s that follow a `+<namespace>` marker, to identify the **issuing system** that party used to perform this derivation. At most one such issuing-system category MAY be added per `+<namespace>` block. It MUST be placed after that block's own `category segment`s, and any `category segment` starting with `-` in that position MUST be interpreted as this issuing-system category rather than the start of a new, unrelated category.
+
+Where multiple derivation namespace segments are chained, each `+<namespace>` block MAY carry its own issuing-system category, scoped only to that block.
+
+Example:
+
+```
+HTTPS://PAC.OMNIZYME.COM/-MS/240:AMYLASE/10:AB9876/20:500ML/21:9876/+ACMELABS.COM/250:1/-PS/240:ALIQUOT-TRACKER
+                         | primary category                        | added by ACMELABS.COM  | issuing system for this derivation
+```
+
+Here, `250:1` was added by `ACMELABS.COM` via a derivation namespace segment. `-PS/240:ALIQUOT-TRACKER` identifies the system `ACMELABS.COM` used to create that aliquot — it is not attributed to `OMNIZYME.COM`, the original issuer, nor does it start a new category for the primary entity.
 
 
 ### Examples:
@@ -157,6 +175,7 @@ HTTPS://PAC.OMNIZYME.COM/-MS/240:AMYLASE/10:AB9876/20:500ML/21:9876/+ACMELABS.CO
 | Result managed by Mettorius LabCross software | `HTTPS://PAC.METTORIUS.COM/-DR/21:1234/-PS/240:LABCROSS` | `1234` is the result ID assigned by LabCross. |
 | Aliquot of Amylase from OmniZyme, aliquoted by ACME Labs | `HTTPS://PAC.OMNIZYME.COM/-MS/240:AMYLASE/10:AB9876/20:500ML/21:9876/+ACMELABS.COM/250:1` | `250:1` (Aliquot) was added by `ACMELABS.COM` via a derivation namespace segment, and is interpreted as a `category segment` of the `-MS` primary category. |
 | Same aliquot, using short notation | `HTTPS://PAC.OMNIZYME.COM/-MS/240:AMYLASE/10:AB9876/20:500ML/21:9876/+ACMELABS.COM/1` | The `250` key is omitted; `1` still carries the implicit key `250` since the preceding `category segment`s follow the recommended order. |
+| Same aliquot, with the system ACME Labs used to create it | `HTTPS://PAC.OMNIZYME.COM/-MS/240:AMYLASE/10:AB9876/20:500ML/21:9876/+ACMELABS.COM/250:1/-PS/240:ALIQUOT-TRACKER` | `-PS/240:ALIQUOT-TRACKER` identifies the issuing system for this derivation only; it is scoped to the `ACMELABS.COM` namespace, not to `OMNIZYME.COM`. |
 | Result managed by Mettorius LabCross software, later Recalcualted by ACMELABS | `HTTPS://PAC.METTORIUS.COM/-DR/21:1234/-PS/240:LABCROSS/+ACMELABS.COM/RECALC:1` | `-PS/240:LABCROSS` is the issuing system. `RECALC:1` was appended afterwards by `ACMELABS.COM` via a derivation namespace segment; it still belongs to the `-DR` primary category, not to the issuing system, even though it is placed after it. |
 
 
