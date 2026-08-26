@@ -65,6 +65,9 @@ The advantage of this is that it allows resolving device related attributes and 
 The category of the item the `PAC-ID` is referring to, MUST be the first `category`.
 The second category, if added, MUST identify the issuing system.
 
+> [!NOTE]
+> The same mechanism MAY also be used after a derivation namespace segment (`+<namespace>`), to identify the issuing system used for that specific derivation. See [Identifying the issuing system of a derivation](#identifying-the-issuing-system-of-a-derivation).
+
 ### Predefined Categories
 The following predefined categories MUST be used if applicable.
 Custom categories MAY be used if no suitable predefined category is available. _Use this as a last resort._
@@ -81,7 +84,7 @@ Materials are physical entities, that can be uniquely identified.
 
 |Description | `category key` | `category segments`|
 |:--- | :------------: | :--- |
-| **Device** (Or equipment, apparatus, appliance, instrument and the like)<br>*A Device is a uniquely identifiable item, non-aliquotable and not dividable.* | **`-MD`**| **`240` (Model&nbsp;code)** * <br> **`21` (Serial&nbsp;number)** *|
+| **Device** (Or equipment, apparatus, appliance, instrument and the like)<br>*A Device is a uniquely identifiable item, non-aliquotable and not dividable.* | **`-MD`**| **`240` (Model&nbsp;code)** * <br> `21` (Serial&nbsp;number) |
 | **Substance** (Or source material, aliquot, sample, product and the like)<br>*A Substance is a uniquely identifiable item, aliquotable and/or dividable.*|**`-MS`**| **`240` (Product&nbsp;number)**&nbsp;* <br>`10` (Batch number)<br>`20` (Container size)<br>`21` (Container&nbsp;number)<br>`250` (Aliquot) |
 | **Consumable**<br>*Consumables are typically bulk goods with limited lifespan. A Consumable is an item with a uniquely identifiable type and typically countable.*|**`-MC`** | **`240` (Product&nbsp;code)**&nbsp;*<br>`10` (Batch&nbsp;number)<br>`20` (Packaging size)<br>`21` (Serial&nbsp;number)<br>`250` (Aliquot)    |
 | **Misc**<br>*Anything that doesn’t fit other material types – **ideally never used**.*|**`-MX`**| **`240` (Product&nbsp;code)**&nbsp;*<br>`10` (Batch&nbsp;number)<br>`20` (Packaging size)<br>`21` (Serial number)<br>`250` (Aliquot)    |
@@ -125,18 +128,55 @@ The short notation omits the keys for segments of each category. Keys are implic
 e.g. for ``HTTPS://PAC.METTORIUS.COM/-MD/240:BAL500/210263/8008:20230205``, `210263` is still regarded to have the implicit key `21`. For ``HTTPS://PAC.METTORIUS.COM/-MD/240:BAL500/8008:20230205/210263`` we can’t auto-assign a key for `210263` as it is preceded by a `id segment` with an explicit key. `210263` is therefore interpreted as a normal `id segment` without `id segment key`.
 
 
+### Segments added via a derivation namespace (`+`)
+
+A `PAC-ID` MAY be extended by a third party using a **derivation namespace segment** (`+<namespace>`), as defined in the [PAC-ID specification](https://github.com/ApiniLabs/PAC-ID). Where `PAC-CAT` is used, any `category segment`s that follow a `+<namespace>` marker MUST be treated as further `category segment`s of the **primary category** — they MUST NOT start a new category.
+
+Example:
+```
+HTTPS://PAC.OMNIZYME.COM/-MS/240:AMYLASE/10:AB9876/20:500ML/21:9876/+ACMELABS.COM/250:1
+                         | primary category                        | added by ACMELABS.COM
+```
+
+Here, `250:1` (Aliquot) is a `category segment` of the `-MS` primary category, even though it was added by `ACMELABS.COM` rather than the original issuer, `OMNIZYME.COM`.
+
+A `+<namespace>` marker does not interrupt the implicit key sequence described in [Short Notation](#short-notation): only an explicit key that differs from the recommended order, or an `id segment` starting with `-`, breaks it. In the following example, since  `240`, `10`, `20`, `21` above were given in the recommended order, the following `category segment` in the 'ACMELABS.COM' namespace still carries the implicit key `250` and MAY be written without it:
+
+```
+HTTPS://PAC.OMNIZYME.COM/-MS/240:AMYLASE/10:AB9876/20:500ML/21:9876/+ACMELABS.COM/1
+```
+
+#### Identifying the issuing system of a derivation
+
+As with the primary category (see [Concatenate a second category to identify the issuing system](#concatenate-a-second-category-to-identify-the-issuing-system)), a second category MAY be concatenated after the `category segment`s that follow a `+<namespace>` marker, to identify the **issuing system** that party used to perform this derivation. At most one such issuing-system category MAY be added per `+<namespace>` block. It MUST be placed after that block's own `category segment`s, and any `category segment` starting with `-` in that position MUST be interpreted as this issuing-system category rather than the start of a new, unrelated category.
+
+Where multiple derivation namespace segments are chained, each `+<namespace>` block MAY carry its own issuing-system category, scoped only to that block.
+
+Example:
+
+```
+HTTPS://PAC.OMNIZYME.COM/-MS/240:AMYLASE/10:AB9876/20:500ML/21:9876/+ACMELABS.COM/250:1/-PS/240:ALIQUOT-TRACKER
+                         | primary category                        | added by ACMELABS.COM  | issuing system for this derivation
+```
+
+Here, `250:1` was added by `ACMELABS.COM` via a derivation namespace segment. `-PS/240:ALIQUOT-TRACKER` identifies the system `ACMELABS.COM` used to create that aliquot — it is not attributed to `OMNIZYME.COM`, the original issuer, nor does it start a new category for the primary entity.
+
+
 ### Examples:
 | **Entity Description** | **PAC-ID** | **Note** |
 |------------------------|------------|----------|
 | Production record managed in Fluidics360 ERP test instance at Mettorius | `HTTPS://PAC.METTORIUS.COM/-DR/21:12345/-PS/240:FLUIDICS360/21:TST` | `12345` is the ID assigned by the ERP; `TST` refers to the test instance. |
 | Production record managed in the only Fluidics360 system at Mettorius | `HTTPS://PAC.METTORIUS.COM/-DR/21:12345/-PS/240:FLUIDICS360` | `12345` assigned by Fluidics360; single instance assumed, so `TST` omitted. |
-| Instrument by Mettorius | `HTTPS://PAC.METTORIUS.COM/-MD/240:BAL500/21:12345/` | Mettorius produces instruments; adding an issuing system would not help with routing. |
+| Instrument by Mettorius | `HTTPS://PAC.METTORIUS.COM/-MD/240:BAL500/21:12345` | Mettorius produces instruments; adding an issuing system would not help with routing. |
 | Calibration managed in the "ACME" tenant of "EosTec"`s SaaS system "Aurora" | `HTTPS://PAC.EOSTEC.COM/-DC/21:12345/-PS/240:AURORA/21:ACME` | `12345` assigned by Aurora; `ACME` is the tenant name. |
 | Pencil used at "ACME". For stationery, they use an Excel-based asset list on ShareDot | `HTTPS://PAC.ACME.COM/-MC/240:EDELWEISS-3B/21:1234/-P/240:SHAREDOT/21:ASSETS.XLS` | `1234` is the ID given in `ASSETS.XLS` |
 | Beehive of the ACME company. Tracked in Fluidics360 Asset Management | `HTTPS://PAC.ACME.COM/-MD/240:BEEHIVE/21:1234/-P/240:FLUIDICS360` | `1234` is the asset number assigned by SAP. |
 | Result generated by BAL-500 balance with serial X78767 | `HTTPS://PAC.METTORIUS.COM/-DR/21:1234/-MD/240:BAL-500/21:X78767` | `1234` is the result ID; the issuing system is the balance itself. |
 | Result managed by Mettorius LabCross software | `HTTPS://PAC.METTORIUS.COM/-DR/21:1234/-PS/240:LABCROSS` | `1234` is the result ID assigned by LabCross. |
-
+| Aliquot of Amylase from OmniZyme, aliquoted by ACME Labs | `HTTPS://PAC.OMNIZYME.COM/-MS/240:AMYLASE/10:AB9876/20:500ML/21:9876/+ACMELABS.COM/250:1` | `250:1` (Aliquot) was added by `ACMELABS.COM` via a derivation namespace segment, and is interpreted as a `category segment` of the `-MS` primary category. |
+| Same aliquot, using short notation | `HTTPS://PAC.OMNIZYME.COM/-MS/240:AMYLASE/10:AB9876/20:500ML/21:9876/+ACMELABS.COM/1` | The `250` key is omitted; `1` still carries the implicit key `250` since the preceding `category segment`s follow the recommended order. |
+| Same aliquot, with the system ACME Labs used to create it | `HTTPS://PAC.OMNIZYME.COM/-MS/240:AMYLASE/10:AB9876/20:500ML/21:9876/+ACMELABS.COM/250:1/-PS/240:ALIQUOT-TRACKER` | `-PS/240:ALIQUOT-TRACKER` identifies the issuing system for this derivation only; it is scoped to the `ACMELABS.COM` namespace, not to `OMNIZYME.COM`. |
+| Result managed by Mettorius LabCross software, later Recalcualted by ACMELABS | `HTTPS://PAC.METTORIUS.COM/-DR/21:1234/-PS/240:LABCROSS/+ACMELABS.COM/RECALC:1` | `-PS/240:LABCROSS` is the issuing system. `RECALC:1` was appended afterwards by `ACMELABS.COM` via a derivation namespace segment; it still belongs to the `-DR` primary category, not to the issuing system, even though it is placed after it. |
 
 
 
