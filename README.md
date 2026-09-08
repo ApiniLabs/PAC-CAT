@@ -37,7 +37,7 @@ While the basic specification for the `PAC-ID` has been intentionally kept minim
 The `PAC-ID`s `identifier` MUST be structured like this:
 ![Segment groups](images/pac-cat-identifier-structure-railroad.svg )
 
-The first `id segment` MUST by a `category key`.
+The first `id segment` MUST be a `category key`.
 The `category key` MUST start with a `-`, followed by the at least one letter.
 `id segments` which are not `category key`s MUST NOT start with '-'.
 
